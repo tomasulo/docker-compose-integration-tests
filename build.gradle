@@ -3,6 +3,13 @@ plugins {
     id 'idea'
 }
 
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
 repositories {
     mavenCentral()
     maven {
@@ -11,7 +18,12 @@ repositories {
 }
 
 dependencies {
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-dynamodb', version: '1.11.86'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.5'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.10'
+
     testCompile 'junit:junit:4.12'
+    testCompile 'org.assertj:assertj-core:3.6.2'
     testCompile 'com.palantir.docker.compose:docker-compose-rule:0.28.1'
 }
 
