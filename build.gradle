@@ -1,0 +1,16 @@
+plugins {
+    id 'java'
+    id 'idea'
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://dl.bintray.com/palantir/releases' // docker-compose-rule is published on bintray
+    }
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+    testCompile 'com.palantir.docker.compose:docker-compose-rule:0.28.1'
+}

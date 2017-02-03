@@ -1,0 +1,8 @@
+version: "2"
+
+services:
+  dynamodb:
+    image: peopleperhour/dynamodb
+    ports:
+      - "8000"
+    hostname: dynamodb
