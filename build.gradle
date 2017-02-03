@@ -14,3 +14,15 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'com.palantir.docker.compose:docker-compose-rule:0.28.1'
 }
+
+test {
+    useJUnit {
+        excludeCategories 'com.tomasulo.sample.IntegrationTest'
+    }
+}
+
+task integrationTest(type: Test) {
+    useJUnit {
+        includeCategories 'com.tomasulo.sample.IntegrationTest'
+    }
+}
