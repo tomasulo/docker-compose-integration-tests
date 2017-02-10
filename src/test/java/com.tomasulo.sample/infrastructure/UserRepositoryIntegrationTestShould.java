@@ -7,7 +7,10 @@ import com.palantir.docker.compose.connection.DockerPort;
 import com.palantir.docker.compose.connection.waiting.HealthChecks;
 import com.tomasulo.sample.IntegrationTest;
 import com.tomasulo.sample.domain.User;
-import org.junit.*;
+import org.junit.After;
+import org.junit.BeforeClass;
+import org.junit.ClassRule;
+import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import java.util.List;
@@ -37,7 +40,10 @@ public class UserRepositoryIntegrationTestShould {
                 .container(DYNAMODB)
                 .port(DATABASE_PORT);
         String dynamoEndpoint = String.format("http://%s:%s", dynamodb.getIp(), dynamodb.getExternalPort());
-        repository = new UserRepository(dynamoEndpoint, "eu-central-1");
+        repository = new UserRepository(dynamoEndpoint,
+                "KEY",
+                "SECRET_KEY",
+                "EU_WEST_1");
     }
 
     @After

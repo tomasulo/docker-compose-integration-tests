@@ -11,13 +11,21 @@ public class User {
     public static final String TABLE_NAME = "Users";
     public static final String ID = "Id";
 
+    @DynamoDBHashKey(attributeName = ID)
     private String id;
+
+    @DynamoDBAttribute(attributeName = "FirstName")
     private String firstName;
+
+    @DynamoDBAttribute(attributeName = "LastName")
     private String lastName;
+
+    @DynamoDBAttribute(attributeName = "Age")
     private Integer age;
+
+    @DynamoDBVersionAttribute
     private Long version;
 
-    @DynamoDBHashKey(attributeName = ID)
     public String getId() {
         return id;
     }
@@ -26,7 +34,6 @@ public class User {
         this.id = id;
     }
 
-    @DynamoDBAttribute(attributeName = "FirstName")
     public String getFirstName() {
         return firstName;
     }
@@ -35,7 +42,6 @@ public class User {
         this.firstName = firstName;
     }
 
-    @DynamoDBAttribute(attributeName = "LastName")
     public String getLastName() {
         return lastName;
     }
@@ -44,7 +50,6 @@ public class User {
         this.lastName = lastName;
     }
 
-    @DynamoDBAttribute(attributeName = "Age")
     public Integer getAge() {
         return age;
     }
@@ -53,7 +58,6 @@ public class User {
         this.age = age;
     }
 
-    @DynamoDBVersionAttribute
     public Long getVersion() {
         return version;
     }

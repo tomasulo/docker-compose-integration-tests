@@ -3,6 +3,10 @@ version: "2"
 services:
   dynamodb:
     image: peopleperhour/dynamodb
+    environment:
+      - "awsRegion=EU_WEST_1"
+      - "awsAccessKey=KEY"
+      - "awsSecretKey=SECRET_KEY"
     ports:
       - "8000"
     hostname: dynamodb

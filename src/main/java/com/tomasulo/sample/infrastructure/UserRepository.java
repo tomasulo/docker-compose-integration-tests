@@ -8,13 +8,13 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedScanList;
-import com.amazonaws.services.dynamodbv2.model.*;
+import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
+import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 import com.amazonaws.services.dynamodbv2.util.TableUtils;
 import com.tomasulo.sample.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,12 +25,12 @@ public class UserRepository {
     private final DynamoDBMapper mapper;
     private final AmazonDynamoDB dynamoDB;
 
-    public UserRepository(String dynamoEndpoint, String region) {
+    public UserRepository(String dynamoEndpoint, String awsAccessKey, String awsSecretKey, String awsRegion) {
         this.dynamoDB = AmazonDynamoDBClientBuilder.standard()
                 .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(
-                        dynamoEndpoint, region))
+                        dynamoEndpoint, awsRegion))
                 .withCredentials(new AWSStaticCredentialsProvider(
-                        new BasicAWSCredentials("USER", "KEY")))
+                        new BasicAWSCredentials(awsAccessKey, awsSecretKey)))
                 .build();
         this.mapper = new DynamoDBMapper(dynamoDB);
 
@@ -38,27 +38,11 @@ public class UserRepository {
     }
 
     private void initializeTable() {
-        ArrayList<KeySchemaElement> keySchema = new ArrayList<>();
-        keySchema.add(new KeySchemaElement()
-                .withAttributeName(User.ID)
-                .withKeyType(KeyType.HASH)); //Partition key
-
-        ArrayList<AttributeDefinition> attributeDefinitions = new ArrayList<>();
-        attributeDefinitions.add(new AttributeDefinition()
-                .withAttributeName(User.ID)
-                .withAttributeType(ScalarAttributeType.S));
-
-        ProvisionedThroughput throughput = new ProvisionedThroughput(10L, 5L);
-
-        CreateTableRequest request = new CreateTableRequest(
-                attributeDefinitions,
-                User.TABLE_NAME,
-                keySchema,
-                throughput
-        );
+        CreateTableRequest req = mapper.generateCreateTableRequest(User.class)
+                .withProvisionedThroughput(new ProvisionedThroughput(10L, 5L));
 
         // create table if necessary
-        TableUtils.createTableIfNotExists(dynamoDB, request);
+        TableUtils.createTableIfNotExists(dynamoDB, req);
 
         try {
             TableUtils.waitUntilActive(dynamoDB, User.TABLE_NAME);
