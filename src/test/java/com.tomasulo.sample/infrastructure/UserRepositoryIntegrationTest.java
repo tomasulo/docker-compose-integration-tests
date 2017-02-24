@@ -20,7 +20,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Category(IntegrationTest.class)
-public class UserRepositoryIntegrationTestShould {
+public class UserRepositoryIntegrationTest {
 
     private static final int DATABASE_PORT = 8000;
     private static final String DYNAMODB = "dynamodb";
@@ -53,7 +53,7 @@ public class UserRepositoryIntegrationTestShould {
     }
 
     @Test
-    public void add_user() throws Exception {
+    public void upsertOneUser() throws Exception {
         User user = randomUser();
 
         repository.upsert(user);
@@ -62,7 +62,7 @@ public class UserRepositoryIntegrationTestShould {
     }
 
     @Test
-    public void get_all_users() throws Exception {
+    public void getAllUsers() throws Exception {
         User userA = randomUser();
         User userB = randomUser();
         User userC = randomUser();
@@ -75,7 +75,7 @@ public class UserRepositoryIntegrationTestShould {
     }
 
     @Test
-    public void update_user() throws Exception {
+    public void updateExistingUser() throws Exception {
         User user = randomUser();
         repository.upsert(user);
         user.setFirstName("Michael");
@@ -88,7 +88,7 @@ public class UserRepositoryIntegrationTestShould {
     }
 
     @Test
-    public void delete_user() throws Exception {
+    public void deleteOneUser() throws Exception {
         User user = randomUser();
         repository.upsert(user);
 
